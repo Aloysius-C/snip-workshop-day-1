@@ -1,0 +1,117 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0.35rem 0 2rem;
+  color: #666;
+}
+
+.form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+.button {
+  padding: 0.65rem 1.1rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: #111;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.notice {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.notice--error {
+  color: #991b1b;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+.notice--success {
+  color: #14532d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.links {
+  margin-top: 2.5rem;
+}
+
+.links h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+}
+
+.empty {
+  color: #777;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.55rem 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #777;
+}
+
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.url {
+  word-break: break-all;
+  color: #444;
+}
+
+a {
+  color: #2563eb;
+}
