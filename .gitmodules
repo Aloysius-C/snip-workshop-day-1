@@ -1,0 +1,12 @@
+[submodule "backend"]
+	path = backend
+	url = ../snip-workshop-day-1.git
+	branch = backend
+[submodule "frontend"]
+	path = frontend
+	url = ../snip-workshop-day-1.git
+	branch = frontend
+[submodule "cli"]
+	path = cli
+	url = ../snip-workshop-day-1.git
+	branch = cli
