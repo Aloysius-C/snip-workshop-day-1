@@ -1,0 +1,12 @@
+{
+  "name": "snip-cli",
+  "version": "1.0.0",
+  "description": "Snip — a tiny URL shortener CLI. Zero dependencies, CommonJS.",
+  "private": true,
+  "bin": {
+    "snip": "cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
