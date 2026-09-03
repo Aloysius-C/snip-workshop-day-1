@@ -142,6 +142,6 @@ const server = Bun.serve({
   },
 });
 
-console.log(`Snip backend (v2) listening on http://localhost:${server.port}`);
+console.log(`Snip backend listening on http://localhost:${server.port}`);
 console.log(`Short links are issued as ${BASE_URL}/<code>`);
 if (PUBLIC_DIR) console.log(`Serving static files from ${PUBLIC_DIR}`);
