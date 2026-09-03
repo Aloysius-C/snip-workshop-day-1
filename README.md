@@ -11,7 +11,8 @@ assembled into one working checkout by submodules.
 snip-workshop-day-1 ──┬── backend    Bun API server (zero deps, in-memory Map)
                       ├── frontend   Angular 19 web app
                       ├── cli        zero-dep Node CLI
-                      └── main       superproject: .gitmodules + this README
+                      ├── bundle     GENERATED whole-app release (server + built UI + CLI)
+                      └── main       superproject: .gitmodules + build script + this README
 ```
 
 ## The API contract
@@ -38,6 +39,7 @@ branch *root* (`server.js`, not `backend/server.js`). On `main`, each folder is 
 | `backend/` | `backend` | Bun, zero deps | The API + redirect server |
 | `frontend/` | `frontend` | Angular 19 | The web client |
 | `cli/` | `cli` | Node, zero deps | The terminal client |
+| `bundle/` | `bundle` | — | **Generated** release: server + built UI + CLI in one folder |
 
 The folder structure you see here only exists on a `main` checkout — git creates it when
 the submodules are mounted.
@@ -103,6 +105,49 @@ Two separate records — the layer commit and the pointer commit. That's the ext
 and in exchange `main` is always a **pinned, reproducible snapshot**: every commit here
 names the exact commit of every layer.
 
+Then roll the change into a release:
+
+```bash
+node scripts/build-bundle.mjs --push
+```
+
 > **Careful:** submodule checkouts are often in *detached HEAD*. If `git status` inside a
 > submodule says so, `git checkout <branch>` before committing, or push explicitly with
 > `git push origin HEAD:<branch>`.
+
+## The release bundle
+
+`bundle/` is a **generated** branch — same spirit as `gh-pages`. It holds the whole app
+assembled into one runnable folder, so a single Bun process serves the API, the
+redirects, *and* the built web UI:
+
+```bash
+node scripts/build-bundle.mjs           # assemble + commit locally
+node scripts/build-bundle.mjs --push    # ...and publish bundle + main
+```
+
+The script pulls each source submodule to its branch tip, builds the frontend, then
+copies `backend/server.js`, `cli/cli.js`, and the Angular output into `bundle/`,
+generating `.env` (`PUBLIC_DIR=./public`), `package.json`, `Dockerfile`,
+`.dockerignore`, and `railway.json` alongside them.
+
+Run the result:
+
+```bash
+cd bundle && bun start                                         # everything on :3000
+docker build -t snip . && docker run --rm -p 3000:3000 snip    # same, from Docker
+```
+
+> **Never hand-edit `bundle/`** — the next build overwrites it. Change the source
+> branch and rebuild.
+
+The script is safe to re-run: with nothing changed upstream it commits nothing, pushes
+nothing, and exits 0. Pushing is decided by comparing local `HEAD` against the remote
+tip rather than by whether this run committed, so commits stranded by an earlier
+`--push`-less run (or a crashed CI job) still get published on the next run.
+
+Two details it has to get right, both easy to trip over:
+
+- `bundle/package.json` has **no `"type"` field** — `cli.js` is CommonJS and must keep
+  running under plain `node` from that folder.
+- The push uses `HEAD:bundle`, because submodule checkouts are usually detached.

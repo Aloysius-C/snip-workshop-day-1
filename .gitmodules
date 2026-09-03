@@ -12,5 +12,5 @@
 	branch = cli
 [submodule "bundle"]
 	path = bundle
-	url = git@github.com:Aloysius-C/snip-workshop-day-1.git
+	url = ../snip-workshop-day-1.git
 	branch = bundle
